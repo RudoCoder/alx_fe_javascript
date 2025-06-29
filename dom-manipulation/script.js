@@ -1,7 +1,11 @@
-// script.js — Fully Updated with Sync, Storage, Filtering, and Conflict Resolution
+// script.js
 
 let quotes = [];
-const SERVER_URL = "https://jsonplaceholder.typicode.com/posts";
+const SERVER_URL = "https://jsonplaceholder.typicode.com/posts"
+
+functionQuotesFromServer() {
+  return fetchServerQuotes();
+}
 
 // Fetch server quotes and sync
 async function fetchServerQuotes() {
@@ -45,8 +49,8 @@ function notifyUser(message) {
 }
 
 function startSyncing() {
-  fetchServerQuotes();
-  setInterval(fetchServerQuotes, 30000);
+  fetchQuotesFromServer();
+  setInterval(fetchQuotesFromServer, 30000);
 }
 
 window.onload = function () {
@@ -74,6 +78,7 @@ window.onload = function () {
   }
 
   startSyncing();
+  createAddQuoteForm();
 };
 
 function saveQuotes() {
@@ -176,4 +181,29 @@ function importFromJsonFile(event) {
     }
   };
   fileReader.readAsText(event.target.files[0]);
+}
+
+// Function to dynamically create the form for adding a new quote
+function createAddQuoteForm() {
+  const formContainer = document.createElement("div");
+
+  const quoteInput = document.createElement("input");
+  quoteInput.id = "newQuoteText";
+  quoteInput.type = "text";
+  quoteInput.placeholder = "Enter a new quote";
+
+  const categoryInput = document.createElement("input");
+  categoryInput.id = "newQuoteCategory";
+  categoryInput.type = "text";
+  categoryInput.placeholder = "Enter quote category";
+
+  const addButton = document.createElement("button");
+  addButton.textContent = "Add Quote";
+  addButton.onclick = addQuote;
+
+  formContainer.appendChild(quoteInput);
+  formContainer.appendChild(categoryInput);
+  formContainer.appendChild(addButton);
+
+  document.body.appendChild(formContainer);
 }
